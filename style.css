@@ -1,0 +1,22 @@
+.board {
+  background-color: #D3D3D3;
+  width: 300px;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mine {
+  background-color: #D3D3D3;
+}
+
+.active {
+  background: url("bomb.jpg");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+td {
+  border: solid 1px;
+}
