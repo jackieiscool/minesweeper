@@ -1,16 +1,28 @@
 .board {
   background-color: #D3D3D3;
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.active {
+  background-color: #ffffff;
+}
+
+.neighbor {
+  background-color: #D3D3D3;
+}
+
+.neighbor.active {
+  background-color: #FF8C00;
 }
 
 .mine {
   background-color: #D3D3D3;
 }
 
-.active {
+.mine.active {
   background: url("bomb.jpg");
   background-size: 80%;
   background-repeat: no-repeat;

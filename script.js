@@ -10,24 +10,22 @@ $(document).ready(function() {
   console.log(mines);
   var placeMines = function() {
     $.each(mines, function(index, value) {
+      var neighbor_count = 1;
       $( "td:eq(" + value + ")").addClass( "mine" );
-      $( "td:eq(" + (value - 1) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value + 1) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value - 9) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value - 10) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value - 11) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value + 9) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value + 10) + ")").addClass( "neighbor" );
-      $( "td:eq(" + (value + 11) + ")").addClass( "neighbor" );
+      $( "td:eq(" + (value - 1) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value + 1) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value - 9) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value - 10) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value - 11) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value + 9) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value + 10) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
+      $( "td:eq(" + (value + 11) + ")").html( "<div class='neighbor'>" + neighbor_count + "</div>" );
     });
     console.log("placed");
   };
 
   $("td").click(function() {
-    if ($(this).hasClass("mine")) {
-      $(this).addClass("active");
-    }
-    
+    $(this).addClass("active");
   });
 
   placeMines();
