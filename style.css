@@ -1,25 +1,20 @@
 .board {
-  background-color: #D3D3D3;
+  background-color: #A9A9A9;
   width: 350px;
   height: 350px;
   margin-left: auto;
   margin-right: auto;
 }
 
+td {
+  border-top: solid #C3C3C3 4px;
+  border-right: solid #696969 4px;
+  border-bottom: solid #696969 4px;
+  border-left: solid #C3C3C3 4px;
+}
+
 .active {
-  background-color: #ffffff;
-}
-
-.neighbor {
-  background-color: #D3D3D3;
-}
-
-.neighbor.active {
-  background-color: #FF8C00;
-}
-
-.mine {
-  background-color: #D3D3D3;
+  border: solid #696969 1px;
 }
 
 .mine.active {
@@ -29,6 +24,52 @@
   background-position: center;
 }
 
-td {
-  border: solid 1px;
+.neighbor_1.active {
+  background: url("number_1.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
+.neighbor_2.active {
+  background: url("number_2.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.neighbor_3.active {
+  background: url("number_3.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.neighbor_4.active {
+  background: url("number_4.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.neighbor_5.active {
+  background: url("number_5.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/*.neighbor {
+  background-color: #A9A9A9;
+}
+
+.neighbor.active {
+  background-color: #FF8C00;
+}
+
+.mine {
+  background-color: #A9A9A9;
+}*/
+
+
+
