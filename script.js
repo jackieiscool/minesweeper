@@ -63,7 +63,14 @@ $(document).ready(function() {
 
   var exposeNeighbors = function(position) {
     // console.log(position);
-    
+    game.cells[position - 1].makeActive();
+    game.cells[position + 1].makeActive();
+    game.cells[position - 9].makeActive();
+    game.cells[position - 10].makeActive();
+    game.cells[position - 11].makeActive();
+    game.cells[position + 9].makeActive();
+    game.cells[position + 10].makeActive();
+    game.cells[position + 11].makeActive();
     // $("td:eq(" + (parseInt(position) - 1) + ")").addClass('active');
     // $("td:eq(" + (parseInt(position) + 1) + ")").addClass('active');
     // $("td:eq(" + (parseInt(position) - 9) + ")").addClass('active');
@@ -81,9 +88,10 @@ $(document).ready(function() {
   }
 
   Cell.prototype.makeActive = function() {
-    var square = $("td:eq" + this.position + ")");
+    var square = $("td:eq(" + this.position + ")");
     square.addClass("active");
-    if (square.hasClass("neighbor_0")) {
+    if (square.hasClass("neighbor_0") && (square.hasClass("active") === false)) {
+      console.log(square);
       exposeNeighbors(this.position);
     }
   };
