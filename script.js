@@ -62,23 +62,16 @@ $(document).ready(function() {
   };
 
   var exposeNeighbors = function(position) {
-    // console.log(position);
-    game.cells[position - 1].makeActive();
-    game.cells[position + 1].makeActive();
-    game.cells[position - 9].makeActive();
-    game.cells[position - 10].makeActive();
-    game.cells[position - 11].makeActive();
-    game.cells[position + 9].makeActive();
-    game.cells[position + 10].makeActive();
-    game.cells[position + 11].makeActive();
-    // $("td:eq(" + (parseInt(position) - 1) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) + 1) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) - 9) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) - 10) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) - 11) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) + 9) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) + 10) + ")").addClass('active');
-    // $("td:eq(" + (parseInt(position) + 11) + ")").addClass('active');
+    var pos = parseInt(position);
+    console.log(pos - 1 );
+    game.cells[pos - 1].makeActive();
+    game.cells[pos + 1].makeActive();
+    game.cells[pos - 9].makeActive();
+    game.cells[pos - 10].makeActive();
+    game.cells[pos - 11].makeActive();
+    game.cells[pos + 9].makeActive();
+    game.cells[pos + 10].makeActive();
+    game.cells[pos + 11].makeActive();
   };
 
   function Cell(mine, position) {
@@ -89,9 +82,10 @@ $(document).ready(function() {
 
   Cell.prototype.makeActive = function() {
     var square = $("td:eq(" + this.position + ")");
-    square.addClass("active");
-    if (square.hasClass("neighbor_0") && (square.hasClass("active") === false)) {
-      console.log(square);
+    if (square.hasClass("active") === false) {
+      square.addClass("active");
+    }
+    if (square.hasClass("neighbor_0")) {
       exposeNeighbors(this.position);
     }
   };
