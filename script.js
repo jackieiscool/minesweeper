@@ -4,39 +4,77 @@ $(document).ready(function() {
 
   function Game() {
     this.cells = [];
+    this.rows = [];
+    this.minePosistions = [];
     this.mines = [];
   }
 
   Game.prototype.chooseMines = function() {
     for (var i = 0; i < 10; i++) {
-      this.mines.push(Math.floor((Math.random() * 101)));
+      this.minePosistions.push(Math.floor((Math.random() * 101)));
     }
   };
 
   Game.prototype.makeCells = function() {
-    for (var i = 0; i < 100; i++) {
-      if ($.inArray(i, this.mines) !== -1) {
-        this.cells.push(new Cell(true, i));
-      } 
-      else{
-        this.cells.push(new Cell(false, i));
+    var counter = 0;
+    for (var x = 0; x < 10; x ++) {
+      var row = [];
+      for (var y = 0; y < 10; y++) {
+        if ($.inArray(counter, this.minePosistions) !== -1) {
+          var cell = new Cell(true, counter, x, y)
+          row.push(cell);
+          this.cells.push(cell);
+          this.mines.push(cell);
+        } 
+        else {
+          var cell = new Cell(false, counter, x, y)
+          row.push(cell);
+          this.cells.push(cell);
+        }
+        counter = counter + 1;
       }
+      this.rows.push(row);
     }
   };
 
   Game.prototype.checkNeighbors = function() {
     var mines = this.mines;
-    var cells = this.cells;
-    $.each(mines, function(index, value) {
-      $( "td:eq(" + value + ")").addClass( "mine" );
-      if (cells[(value - 1 )]) { cells[(value - 1 )].neighborCount += 1;}
-      if (cells[(value + 1 )]) {cells[(value + 1 )].neighborCount += 1;}
-      if (cells[(value - 9 )]) {cells[(value - 9 )].neighborCount += 1;}
-      if (cells[(value - 10 )]) {cells[(value - 10 )].neighborCount += 1;}
-      if (cells[(value - 11 )]) {cells[(value - 11 )].neighborCount += 1;}
-      if (cells[(value + 9 )]) {cells[(value + 9 )].neighborCount += 1;}
-      if (cells[(value + 10)]) {cells[(value + 10 )].neighborCount += 1;}
-      if (cells[(value + 11 )]) {cells[(value + 11 )].neighborCount += 1;}
+    var rows = this.rows;
+    $.each(mines, function(index, cell) {
+      $( "td:eq(" + cell.position + ")").addClass( "mine" );
+      if (rows[cell.xCoordinate] && rows[cell.xCoordinate][(cell.yCoordinate - 1)]) {
+        rows[cell.xCoordinate][(cell.yCoordinate - 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate] && rows[cell.xCoordinate][(cell.yCoordinate + 1)]) {
+        rows[cell.xCoordinate][(cell.yCoordinate + 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate + 1] && rows[cell.xCoordinate + 1][(cell.yCoordinate - 1)]) {
+        rows[cell.xCoordinate + 1][(cell.yCoordinate - 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate + 1] && rows[cell.xCoordinate + 1][(cell.yCoordinate + 1)]) {
+        rows[cell.xCoordinate + 1][(cell.yCoordinate + 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate + 1] && rows[cell.xCoordinate + 1][cell.yCoordinate]) {
+        rows[cell.xCoordinate + 1][cell.yCoordinate].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate - 1] && rows[cell.xCoordinate - 1][(cell.yCoordinate - 1)]) {
+        rows[cell.xCoordinate - 1][(cell.yCoordinate - 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate - 1] && rows[cell.xCoordinate - 1][(cell.yCoordinate + 1)]) {
+        rows[cell.xCoordinate - 1][(cell.yCoordinate + 1)].neighborCount += 1
+      };
+      if (rows[cell.xCoordinate - 1] && rows[cell.xCoordinate - 1][cell.yCoordinate]) {
+        rows[cell.xCoordinate - 1][cell.yCoordinate].neighborCount += 1
+      };
+
+      // if (cells[(value - 1 )]) { cells[(value - 1 )].neighborCount += 1;}
+      // if (cells[(value + 1 )]) {cells[(value + 1 )].neighborCount += 1;}
+      // if (cells[(value - 9 )]) {cells[(value - 9 )].neighborCount += 1;}
+      // if (cells[(value - 10 )]) {cells[(value - 10 )].neighborCount += 1;}
+      // if (cells[(value - 11 )]) {cells[(value - 11 )].neighborCount += 1;}
+      // if (cells[(value + 9 )]) {cells[(value + 9 )].neighborCount += 1;}
+      // if (cells[(value + 10)]) {cells[(value + 10 )].neighborCount += 1;}
+      // if (cells[(value + 11 )]) {cells[(value + 11 )].neighborCount += 1;}
     });
   };
 
@@ -50,35 +88,69 @@ $(document).ready(function() {
 
   Game.prototype.click = function() {
     $("td").click(function() {
-      $(this).addClass("active");
-      if ($(this).hasClass("neighbor_0")) {
-        var position = ($(this).parent()[0].rowIndex).toString() + ($(this).prop('cellIndex')).toString();
-        exposeNeighbors(position);
-      }
-      else if ($(this).hasClass("mine")) {
-        alert("Game Over!");
-      }
+      // $(this).addClass("active");
+      // if ($(this).hasClass("neighbor_0")) {
+        var x = ($(this).parent()[0].rowIndex);
+        var y = ($(this).prop('cellIndex'));
+        cell = game.rows[x][y];
+        cell.makeActive();
+        // cell.exposeNeighbors();
+      // }
+      // else if ($(this).hasClass("mine")) {
+      //   alert("Game Over!");
+      // }
     });
   };
 
-  var exposeNeighbors = function(position) {
-    var pos = parseInt(position);
-    console.log(pos - 1 );
-    game.cells[pos - 1].makeActive();
-    game.cells[pos + 1].makeActive();
-    game.cells[pos - 9].makeActive();
-    game.cells[pos - 10].makeActive();
-    game.cells[pos - 11].makeActive();
-    game.cells[pos + 9].makeActive();
-    game.cells[pos + 10].makeActive();
-    game.cells[pos + 11].makeActive();
-  };
+  // var exposeNeighbors = function(xCoordinate, yCoordinate) {
+  //   console.log(position);
+  //   var x = parseInt(xCoordinate);
+  //   var y = parseInt(yCoordinate);
+  //   // game.cells[pos - 1].makeActive();
+  //   // game.cells[pos + 1].makeActive();
+  //   // game.cells[pos - 9].makeActive();
+  //   // game.cells[pos - 10].makeActive();
+  //   // game.cells[pos - 11].makeActive();
+  //   // game.cells[pos + 9].makeActive();
+  //   // game.cells[pos + 10].makeActive();
+  //   // game.cells[pos + 11].makeActive();
+  // };
 
-  function Cell(mine, position) {
+  function Cell(mine, position, xCoordinate, yCoordinate) {
     this.mine = mine;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
     this.position = position;
     this.neighborCount = 0;
   }
+
+  Cell.prototype.exposeNeighbors = function() {
+    console.log("things");
+    if ( game.rows[this.xCoordinate] && game.rows[this.xCoordinate][this.yCoordinate - 1 ]) {
+      game.rows[this.xCoordinate][this.yCoordinate - 1 ].makeActive()
+    };
+    if ( game.rows[this.xCoordinate] && game.rows[this.xCoordinate][this.yCoordinate + 1 ]) {
+      game.rows[this.xCoordinate][this.yCoordinate + 1 ].makeActive()
+    };
+    if ( game.rows[this.xCoordinate - 1] && game.rows[this.xCoordinate - 1][this.yCoordinate - 1 ]) {
+      game.rows[this.xCoordinate - 1][this.yCoordinate - 1 ].makeActive()
+    };
+    if (game.rows[this.xCoordinate - 1] && game.rows[this.xCoordinate - 1][this.yCoordinate + 1 ]) {
+      game.rows[this.xCoordinate - 1][this.yCoordinate + 1 ].makeActive()
+    };
+    if (game.rows[this.xCoordinate - 1] && game.rows[this.xCoordinate - 1][this.yCoordinate]) {
+      game.rows[this.xCoordinate - 1][this.yCoordinate].makeActive()
+    };
+    if (game.rows[this.xCoordinate + 1] && game.rows[this.xCoordinate + 1][this.yCoordinate - 1 ]) {
+      game.rows[this.xCoordinate + 1][this.yCoordinate - 1 ].makeActive()
+    };
+    if (game.rows[this.xCoordinate + 1] && game.rows[this.xCoordinate + 1][this.yCoordinate + 1 ]) {
+      game.rows[this.xCoordinate + 1][this.yCoordinate + 1 ].makeActive()
+    };
+    if (game.rows[this.xCoordinate + 1] && game.rows[this.xCoordinate + 1][this.yCoordinate]) {
+      game.rows[this.xCoordinate + 1][this.yCoordinate].makeActive()
+    };
+  };
 
   Cell.prototype.makeActive = function() {
     var square = $("td:eq(" + this.position + ")");
@@ -86,7 +158,8 @@ $(document).ready(function() {
       square.addClass("active");
     }
     if (square.hasClass("neighbor_0")) {
-      exposeNeighbors(this.position);
+      this.exposeNeighbors();
+      // exposeNeighbors(this.xCoordinate, this.yCoordinate);
     }
   };
 
